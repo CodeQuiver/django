@@ -162,7 +162,7 @@ It's recommended to use a column with
 :attr:`~django.db.models.Field.unique` or
 :attr:`~django.db.models.Field.db_index` when using
 :meth:`~django.db.models.query.QuerySet.get` to retrieve individual objects.
-The query will be quicker because of the underlying database index, 
+The query will be quicker because it will use the underlying database index, 
 and you'll guarantee only one object will be returned.
 
 So using the :ref:`example blog models <queryset-model-example>`:
@@ -179,7 +179,7 @@ will be quicker than:
 
 because ``id`` is indexed by the database and is guaranteed to be unique.
 
-Doing the following is potentially slower:
+Doing the following is not recommended:
 
 .. code-block:: pycon
 
