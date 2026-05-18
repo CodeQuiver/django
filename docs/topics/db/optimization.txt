@@ -163,7 +163,7 @@ There are two reasons to use a column with
 :attr:`~django.db.models.Field.db_index` when using
 :meth:`~django.db.models.query.QuerySet.get` to retrieve individual objects.
 First, the query will be quicker because of the underlying database index.
-Also, the query could run much slower if multiple objects match the lookup;
+Also, the query could run much slower if multiple objects match the lookup, or you may cut off the piece of data you're actually trying to find;
 having a unique constraint on the column guarantees this will never happen.
 
 So using the :ref:`example blog models <queryset-model-example>`:
@@ -190,11 +190,7 @@ First of all, ``headline`` is not indexed, which will make the underlying
 database fetch slower.
 
 Second, the lookup doesn't guarantee that only one object will be returned.
-If the query matches more than one object, it will retrieve and transfer all of
-them from the database. This penalty could be substantial if hundreds or
-thousands of records are returned. The penalty will be compounded if the
-database lives on a separate server, where network overhead and latency also
-play a factor.
+While the number of results is capped at 21 rows, there's no guarantee that the object you're looking for will be among them. Narrowing your query up-front will be more effective in finding what you need.
 
 Retrieve related objects efficiently
 ====================================
