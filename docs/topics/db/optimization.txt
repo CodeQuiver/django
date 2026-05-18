@@ -158,13 +158,12 @@ is writing for you and start from there.
 Retrieve individual objects using a unique, indexed column
 ==========================================================
 
-There are two reasons to use a column with
+It's recommended to use a column with
 :attr:`~django.db.models.Field.unique` or
 :attr:`~django.db.models.Field.db_index` when using
 :meth:`~django.db.models.query.QuerySet.get` to retrieve individual objects.
-First, the query will be quicker because of the underlying database index.
-Also, the query could run much slower if multiple objects match the lookup, or you may cut off the piece of data you're actually trying to find;
-having a unique constraint on the column guarantees this will never happen.
+The query will be quicker because of the underlying database index, 
+and you'll guarantee only one object will be returned.
 
 So using the :ref:`example blog models <queryset-model-example>`:
 
@@ -180,7 +179,7 @@ will be quicker than:
 
 because ``id`` is indexed by the database and is guaranteed to be unique.
 
-Doing the following is potentially quite slow:
+Doing the following is potentially slower:
 
 .. code-block:: pycon
 
@@ -189,8 +188,9 @@ Doing the following is potentially quite slow:
 First of all, ``headline`` is not indexed, which will make the underlying
 database fetch slower.
 
-Second, the lookup doesn't guarantee that only one object will be returned.
-While the number of results is capped at 21 rows, there's no guarantee that the object you're looking for will be among them. Narrowing your query up-front will be more effective in finding what you need.
+Second, the lookup may return multiple results.
+The number returned is capped at 21 rows, but there's no guarantee that the object you're looking for will be among them.
+Narrowing your query up-front will be more effective in finding what you need.
 
 Retrieve related objects efficiently
 ====================================
